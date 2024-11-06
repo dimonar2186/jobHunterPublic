@@ -1,0 +1,24 @@
+@startuml "Open the existing vacancy sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationsFront" as front
+    participant "applicationsBack" as back
+    entity "vacancy" as vacancy
+
+    user -> front : open vacancyPage for the existing vacancy
+    front -> back : GET ../api/vacancy/{vacancy.id}
+    back -> vacancy : get details \nof vacancy.id
+    alt "vacancy successfully found"
+        vacancy -> back : details
+        back -> front : vacancy details
+        front --> user : vacancyPage       
+    else "vacancy not found"
+        back --> front : HTTP code 404
+        front --> user : vacancyPage with error "Not found"
+    else "database is unavailable"
+        back --> front : HTTP code 504
+        front --> user : vacancyPage with error "Error occured"       
+    end
+@enduml

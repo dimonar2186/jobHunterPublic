@@ -1,0 +1,25 @@
+@startuml "Get list of all currencies sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+    database "database" as db
+    entity "employer" as employer
+
+    front -> back : GET ../user/employers
+    back -> db : select all employers
+    db -> employer : select
+    db --> back : result
+
+    alt "Currencies were not found"
+        back --> front : HTTP code 404
+    else "Database failed"
+        back --> front : HTTP code 504
+        front --> user : notify "Error occured"
+    else "Currencies list was returned successfully"
+        back --> front : HTTP code 200 \nemployers list
+    end
+
+@enduml

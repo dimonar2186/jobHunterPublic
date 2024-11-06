@@ -1,0 +1,41 @@
+= Vocabulary
+== Purpose of the Document
+Define basic terms and definitions.
+
+== Vocabulary
+.Vocabulary
+[%autowidth, options="header"]
+|===
+|Term | Description
+
+|User
+|Anyone who seeks for a job
+
+|Vacancy
+|Interesting for user vacancy
+
+|Job applcation
+|The process of of competition for a job
+
+|Stage
+|The stage of job application process
+
+|CV
+|User's CV that was sent to apply to a vacancy
+
+|Message
+|Text or file with information about job application
+
+|Employer
+|A company which placed the vacancy
+
+|Job offer
+|A job offer was got by user from emploer
+
+|Human Resources Manager (HRManager)
+|Someone who represents an emoployer
+
+|Job searching proccess
+|The process of seeking for a new job. Can consist of multiple vacancies.
+
+|===

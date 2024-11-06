@@ -1,0 +1,27 @@
+@startuml jobHunterUseCaseDiagram
+!define GITHUB_PATH https://github.com/dimonar2186/jobHunter
+
+    actor "user" as user
+    rectangle jobHunter {
+        usecase "Create job search" as UC1
+        usecase "Add vacancy" as UC2
+        usecase "Delete vacancy" as UC3
+        usecase "Edit vacancy" as UC4
+        'usecase "Apply for a vacancy" as UC7
+        'usecase "Change stage" as UC4
+        'usecase "Update stage" as UC5
+        'usecase "Add offer" as UC8
+        usecase "Edit job search process" as UC5
+        usecase "Archive job search process" as UC6
+    }
+    user --> UC1
+    user --> UC2
+    user --> UC3
+    user --> UC4
+    user --> UC5
+    user --> UC6
+    'user --> UC7
+    'user --> UC8
+    'user --> UC7
+    'user --> UC5
+@enduml

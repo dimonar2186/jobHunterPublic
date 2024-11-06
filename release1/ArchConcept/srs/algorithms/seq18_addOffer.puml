@@ -1,0 +1,28 @@
+@startuml "Add a new offer to the existing vacancy sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+    database "database" as db
+    entity "offer" as offer
+
+    user -> front : initiate an adding of an offer\nto the existing vacancy
+    front -> back : PATCH ../user/vacancies/{vacancyId}
+
+    back -> db : create an offer
+    db -> offer ** : create
+    db --> back : result
+    alt "Offer creation failed"
+        break
+            back --> front : HTTP code 504
+            front --> user : notify "Error occured"
+        end
+    else "Offer is created"
+        back --> front : HTTP code 200 \nvacancy details
+        front -> front : update vacancyPage
+        front --> user : notify "Offer was created"
+    end
+
+@enduml

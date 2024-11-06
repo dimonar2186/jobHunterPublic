@@ -1,0 +1,40 @@
+@startuml "Edit the existing jobSearchingProcess sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+
+    ref over user, front, back :Click here: [[seq4_openVacancy.puml Open vacancyPage (seq4_openVacancy.puml)]]
+
+    user -> front : change page mode to Edit
+
+    alt "Edit vacancy details"
+        ref over user, front, back :Click here: [[seq10_editVacancyDetails.puml Edit vacancy details (seq10_editVacancyDetails.puml)]]
+    else "Create a new applicationStage"
+        ref over user, front, back :Click here: [[seq11_createNewApplicationStage.puml Create a new applicationStage for the vacancy (seq11_createNewApplicationStage.puml)]]
+    else "Delete the existing applicationStage"
+        ref over user, front, back :Click here: [[seq12_deleteApplicationStage.puml Delete the existing applicationStage from the vacancy (seq12_deleteApplicationStage.puml)]]
+    else "Update the existing applicationStage"
+        ref over user, front, back :Click here: [[seq13_updateApplicationStage.puml Update the existing applicationStage from the vacancy (seq13_updateApplicationStage.puml)]]
+    else "Add a HRManager"
+        ref over user, front, back :Click here: [[seq14_addHRManager.puml Create a new HRManager for the vacancy (seq14_addHRManager.puml)]]
+    else "Update the HRManager's details"
+        ref over user, front, back :Click here: [[seq15_updateHRManagerDetails.puml Update the existing HRManager of the vacancy (seq15_updateHRManagerDetails.puml)]]
+    else "Add a contact to the HRManager"
+        ref over user, front, back :Click here: [[seq16_addHRManagerContact.puml Add a new contact to the HRManager (seq16_addHRManagerContact.puml)]]
+    else "Update the contact of the HRManager"
+        ref over user, front, back :Click here: [[seq17_updateHRManagerContact.puml Update the existing contact of the HRManager (seq17_updateHRManagerContact.puml)]]
+    else "Add an offer"
+        ref over user, front, back :Click here: [[seq18_addOffer.puml Add an offer to the vacancy (seq18_addOffer.puml)]]
+    else "Delete the offer"
+        ref over user, front, back :Click here: [[seq19_deleteOffer.puml Delete the existing offer from the vacancy (seq19_deleteOffer.puml)]]
+    else "Update the offer"
+        ref over user, front, back :Click here: [[seq20_updateOffer.puml Update the existing offer of the vacancy (seq20_ipdateOffer.puml)]]
+    else "Delete the HRManager"
+        ref over user, front, back :Click here: [[seq21_deleteHRManager.puml Delete the existing HRManager from the vacancy (seq21_deleteHRManager.puml)]]
+    else "Delete the contact of the HRManager"
+        ref over user, front, back :Click here: [[seq22_deleteHRManagerContact.puml Delete the existing HRManager from the vacancy (seq22_deleteHRManagerContact.puml)]]
+    end
+@enduml

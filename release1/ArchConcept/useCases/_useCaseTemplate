@@ -1,0 +1,65 @@
+= Use Case: [Use Case Name]
+:doctype: article
+:toc:
+:toclevels: 1
+
+== Summary
+
+This section provides a brief overview of the use case.
+
+== References
+- [any term is used in document]
+- [the second term in document]
+
+== Actors
+* **Primary Actor**: [Actor Name]
+
+== Business requirements links
+This section provide liks to BRs that are implemented by this use case.
+
+== Preconditions
+
+- [Any conditions that must be true before the use case begins]
+- [Additional preconditions]
+
+== Postconditions
+
+- [The state of the system after the use case successfully completes]
+- [Additional postconditions]
+
+== Trigger
+
+- [Event or action that initiates the use case]
+
+== Main Scenario
+
+1. [Step 1: Description of the first action]
+2. [Step 2: Description of the second action]
+3. [Step 3: Description of the third action]
+4. [Step N: Final action leading to success]
+
+== Extensions (Alternate Flows)
+.Extensions
+[%autowidth, options="header"]
+|===
+|Main Scenario step |Condition |Alternate steps to be executed
+
+|1
+|**[Condition 1]**
+|[What happens if the condition is met?]
+a|  1. [Alternate steps to be executed]
+
+|===
+
+== Special Requirements
+
+- [Non-functional requirements, such as performance, security, etc.]
+- [Additional special requirements]
+
+== Assumptions
+
+- [Any assumptions made regarding actors, systems, or environment]
+
+== Frequency of Use
+
+- [Expected frequency of this use case execution]

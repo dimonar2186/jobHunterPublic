@@ -1,0 +1,26 @@
+@startuml "Open the existing jobSearchingProcess sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationsFront" as front
+    participant "applicationsBack" as back
+    entity "jobSearchingProcess" as jobSearchingProcess
+    entity "vacancy" as vacancy
+
+    front -> back : GET ../api/jobSearchingProcess/{jobSearchingProcess.id}
+    back -> jobSearchingProcess : get details \nof jobSearchingProcess.id
+    alt "jobSearchingProcess successfully found"
+        jobSearchingProcess -> back : details
+        back -> vacancy : get all vacancies for jobSearchingProcess.id
+        return
+        back -> front : jobSearchingProcess details
+        front --> user : jobSearchingProcessPage       
+    else "jobSearchingProcess not found"
+        back --> front : HTTP code 404
+        front --> user : jobSearchingProcessPage with error "Not found"
+    else "database is unavailable"
+        back --> front : HTTP code 504
+        front --> user : jobSearchingProcessPage with error "Error occured"       
+    end
+@enduml

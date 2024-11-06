@@ -1,0 +1,39 @@
+@startuml "Add a new applicationStage of the existing vacancy sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+    database "database" as db
+    entity "applicationStage" as applicationStage
+
+    user -> front : initiate adding\nof a new applicationStage
+    loop
+        user -> front : provide applicationStage.orderNumber\nand applicationStage.name
+        front -> front : check if the applicationStage.name\nis provided
+        opt 
+            front --> front : applicationStage.name is missed
+            front --> user : notify\n"Provide applicationStage.name"
+        end
+        break
+            front --> front : applicationStage.name is provided
+        end
+    end
+    front -> back : POST ../user/applicationStages
+    back -> db : select all following applicationStages
+    back -> db : create applicationStage\nand\nupdate orderNumber and status\nof all following applicationStages
+    db -> applicationStage ** : create new applicationStage\nand\nupdate orderNumber and status\nof all following applicationStages
+    db --> back : result
+    alt "applicationStage creation failed"
+        break
+            back --> front : HTTP code 504
+            front --> user : notify "Error occured"
+        end
+    else "applicationStage creation is successful"
+        back --> front : HTTP code 201 \napplicationStage details
+        front -> front : update vacancyPage
+        front --> user : notify "applicationStage is created"
+    end
+
+@enduml

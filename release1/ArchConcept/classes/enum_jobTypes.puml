@@ -1,0 +1,7 @@
+@startuml "enum for jobTypes"
+    enum enumjobTypes {
+        fulltime
+        parttime
+        contract
+    }
+@enduml

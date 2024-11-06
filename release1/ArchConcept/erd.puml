@@ -1,0 +1,184 @@
+@startuml "erd jobHunter"
+
+entity "user" as user {
+    id : uuid <PK>
+}
+
+entity "jobSearchProcess" as jsp {
+    id : uuid <PK>
+    name : string
+    minimumMonthlySalary : float
+    maximumMonthlySalary : float
+    position : array of strings
+    user : uuid link to user
+    creationDate : timestamp
+    updateDate : timestamp
+    status : uuid link to jobSearchProcessStatuses
+    isDeleted : boolean
+    deleteDate : timestamp
+}
+
+enum "job_searching_process_statuses" as jsp_statuses_dic {
+    active
+    archived
+    finished
+    deleted
+}
+
+enum "vacancy_statuses" as vacancy_statuses_dic {
+    active
+    failed
+    success
+    deleted
+}
+
+entity "links_to_job_types" as links_to_jobTypes {
+    id : uuid <PK>
+    jobType : enum
+    object_id : uuid link to object in table_type
+    table_type : enum
+}
+
+enum "job_types" as jobTypes {
+    full-time
+    part-time
+    contract
+}
+
+enum "table_types" as tableTypes {
+    offers
+    vacancies
+    job_searching_processes
+    employers
+}
+
+entity "locations" as locations {
+    id : uuid <PK>
+    object_id : uuid link to object in table_type
+    table_type : enum
+    country : uuid link to countries
+}
+
+entity "Hhrmanagers" as hr {
+    id : uuid <PK>
+    name : string 
+    last_name : string
+    second_name : string
+    employer : uuid link to employer
+    creation_date : timestamp
+}
+
+entity "hrcontacts" as hrcontact {
+    id : uuid <PK>
+    value : string
+    messenger : uuid link to messangers
+    creation_date : timestamp
+    update_date : timestamp
+    preferable : boolean
+    is_deleted : boolean
+    HRmanager : uuid link to HRManagers
+}
+
+entity "employers" as emp {
+    id : uuid <PK>
+    name : string
+    creation_date : timestamp
+}
+
+entity "vacancies" as vacancy {
+    id : uuid <PK>
+    creation_date : timestamp
+    update_date : timestamp
+    employer : uuid <FK> link to employer
+    jobSearchProcess : uuid link to jobSearchProcess
+    applicationDate : timestamp
+    minimumMonthlySalary : float
+    maximumMonthlySalary : float
+    contractLengrh : integer
+    benefits : string
+    responsibilities : string
+    position : string
+    comments : string
+    status : uuid link to vacancy_statuses
+    currency: uuid link to currencies
+}
+
+entity "countries" as countries {
+    id : uuid <PK>
+    name : string
+    code: string
+}
+
+entity "messengers" as mess {
+    id : uuid <PK>
+    name : string
+}
+
+entity "offer" as offer {
+    id : uuid <PK>
+    monthlySalary : float
+    position : string
+    contractLength : integer
+    comments : string
+    currency: uuid link to currencies
+}
+
+entity "vacancies_to_hrmanagers" as vacanciesToHRManagers {
+    id : uuid <PK>
+    HRManager : uuid link to HRManagers
+    vacancy : uuid to vacancies
+}
+
+entity "currencies" as currencies {
+    id : uuid <PK>
+    name : string
+    iso_code : string
+    short_name : string
+}
+
+entity "application_stages" as applicationStages {
+    id : uuid <PK>
+    index_name : integer
+    vacancy : uuid link to vacancies
+    created_at : timestamp
+    updated_at : timestamp
+    status : enum
+}
+
+enum "application_stage_statuses" as applicationStageStatuses {
+    active
+    waiting
+    blocked
+    passed
+    failed
+    deleted
+}
+
+user ||--o{ jsp
+locations }o--|| countries
+locations }o--o{ jsp
+locations }o--o{ vacancy
+locations }o--o{ emp
+jsp ||--o{ vacancy
+vacancy ||--|| emp
+vacancy ||--o{ vacanciesToHRManagers
+hr ||--o{ vacanciesToHRManagers
+hr ||--o{ hrcontact
+emp ||--o{ hr
+'emp }o--|| country
+hrcontact }o--o| mess
+jsp }o--o| links_to_jobTypes
+links_to_jobTypes }o--|| jobTypes
+links_to_jobTypes }o--|| tableTypes
+locations }o--|| tableTypes
+offer }o--|| links_to_jobTypes
+offer |o--|| vacancy
+jsp }o--|| jsp_statuses_dic
+vacancy }o--|| vacancy_statuses_dic
+vacancy }o--o| links_to_jobTypes
+vacancy }o--o| currencies
+jsp }o--o| currencies
+offer }o--o| currencies
+vacancy ||--|{ applicationStages
+applicationStages }o--o| applicationStageStatuses
+@enduml

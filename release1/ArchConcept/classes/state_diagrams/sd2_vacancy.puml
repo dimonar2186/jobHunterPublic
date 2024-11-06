@@ -1,0 +1,9 @@
+@startuml "vacancy state diagram"
+hide empty description
+    [*] --> Active : create vacancy
+    Active --> Deleted : delete jobSearchingProcess
+    Active --> Failed : one of applicationStages failed
+    Active --> Success : offer is got
+    Failed --> Deleted : delete jobSearchingProcess
+    Success --> Deleted : delete jobSearchingProcess
+@enduml

@@ -1,0 +1,9 @@
+@startuml "enum for vacancy status"
+    enum messenger {
+        phone
+        whatsapp
+        telegram
+        facebook
+        linkedIn
+    }
+@enduml

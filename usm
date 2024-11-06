@@ -1,0 +1,50 @@
+@startboard
+A1. General activitiy
++T1.1 Sign up
+++E1 R1 Internal registration
+++++E2 R3 Google SSO
++T1.2 Log in
+++E3 R1 Internal registration
+++++E4 R3 Google SSO
+A2. Manage job search process
++T2.1 Manage job search process
+++E5 R1 Set target values
+++E6 R1 Start job search process
+++E7 R1 Finilize job search process
+A3. Manage vacancy response
++T3.1 Manage vacancy response
+++E8 R1 Create new vacancy response
+++E9 R1 Delete vacancy response
+++E10 R1 Update vacancy response
+++E11 R1 Change upplying process
+A4. Job search services integration
++T4.1 Connect to job search service
+++++E12 R3 Connect to job search service
+++++E13 R3 Set search parametres
+++++E14 R3 Set notification rules
+A5. Messagers integration
++T5.1 Connect messagers
++++++E15 R4 Connect to messangers
++++++E16 R4 Get messages from messagers
+A6. Phonebook integration
++T6.1 Connect phone
++++++E17 R4 Connect to Phonebook
++++++E18 R4 Get informations about HR's calls
+A7. Check companies and HRs reviews
++T7.1 Post review
+++++E18 R3 Create review
+++++E19 R3 Update review
+++++E20 R3 Delete review
++T7.2 Find review
+++++E21 R3 Find reviews of company
+++++E22 R3 Find reviews of HR
+A8. CV creation and cEtomization
++T8.1 Create CV
+++++++E23 R5 Create CV based on template
++T8.2 CEtomize CV
+++++++E24 R5 Manually cEtomize CV
++++++++E25 R6 Ask AI to cEtomize CV
+A9. Get statistics
++T9.1 Get report
++++E26 R3 Get statistics
+@endboard

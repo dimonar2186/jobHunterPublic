@@ -1,0 +1,7 @@
+@startuml "user class diagram"
+
+    class user {
+        * id : uuid
+    }
+
+@enduml

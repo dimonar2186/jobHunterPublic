@@ -1,0 +1,78 @@
+= Use Case: UC3_DeleteVacancy
+:doctype: article
+:toc:
+:toclevels: 1
+
+== Summary
+The user deletes the existing vacancy.
+
+== References
+- Vacancy - a job vacancy the user somehow applied for. See <<TBD link, TBD>>
+- JobSearchingProcess - the process of seeking a new job. See <<TBD link, TBD>>
+- ApplicationStage - a stage that the user must go through to apply for the job. See <<TBD link, TBD>>
+
+== Actors
+* **Primary Actor**: User
+
+== Business requirements links
+* <<../../projectDocs/brd.adoc#BR2.17, BR2.17>>
+
+== Preconditions
+
+- User is logged into the System.
+- User is authorized to delete Vacancy.
+- JobSearchingProcess exists.
+- Vacancy exists.
+- One of pages is displayed:
+    * JobSearchingProcessPage (see <<TBD link, TBD>>)
+    * VacancyPage (see <<TBD link, TBD>>).
+
+== Postconditions
+
+- The System successfully deletes the Vacancy.
+- The System successfully deletes ApllicationStages associated with the deleted Vacancy.
+
+== Trigger
+
+- User initiates deleting of the Vacancy.
+
+== Main Scenario
+
+1. System prompts User to confirm deletion of the Vacancy 
+2. User confirms the deletion of the Vacancy
+3. System deletes:
+    * all ApplicationStages of the Vacancy
+    * all files
+    * offer
+4. System deletes the Vacancy
+5. System notifies User that the Vacancy has been successfully deleted
+6. Systen refreshes and displays the JobSearchingProcessPage (see <<TBD link, TBD>>)
+7. End of scenario
+
+== Extensions (Alternate Flows)
+.Extensions
+[%autowidth, options="header"]
+|===
+|Main Scenario step |Condition |Alternate steps to be executed
+
+|2
+a|User refuses the deleting of the Vacancy
+a|. End of scenario
+
+|3
+a|The deletion of all ApplicationStages ends with an error
+a|. System restores all ApplicationStages
+. System notifies User that the error occurred
+. End of scenario
+
+|4
+a|The deletion of the Vacancy ends with an error
+a|. System restores all ApplicationStages
+. System notifies User that an error occurred
+. End of scenario
+
+|===
+
+== Special Requirements
+
+- The system should delete the Vacancy and all ApllicationStages in under 5 seconds

@@ -1,0 +1,31 @@
+@startuml "vacacy class diagram"
+
+    class vacancy {
+        * id : uuid
+        * employer : uuid
+        - openDate : timestamp
+        - minimumMonthlySalary : float
+        - maximumMonthlySalary : float
+        - currency : uuid link to currency dictionary
+        - applicationDate : timestamp
+        * position : string
+        - department : string
+        - jobType : uuid
+        - contractLength : integer
+        - benifits : string
+        - responsibilities : string
+        - comments : string
+        * creationDate : timestamp
+        - updateDate : timestamp
+        * status : enum
+        - deleteDate : timestamp
+        * name : string
+        + create ()
+        + update ()
+        + updateStatus ()
+        + delete ()
+        + createEmployer ()
+        + createHRManager ()
+    }
+
+@enduml

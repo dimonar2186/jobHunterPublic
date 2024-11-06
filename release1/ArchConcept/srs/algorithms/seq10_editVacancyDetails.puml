@@ -1,0 +1,72 @@
+@startuml "Edit details of the existing vacancy sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+    database "database" as db
+    entity "vacancy" as vacancy
+    entity "employer" as employer
+    entity "HRManager" as HRManager
+
+    user -> front : initiate to change details\nof the vacancy
+    ref over front, back, db :Click here: [[seq23_getCurrencies.puml Get list of currencies (seq23_getCurrencies.puml)]]
+    front -> front : open vacancyPage in\nedition mode
+    front -> back : GET ../user/employers
+    back -> db : select all user's employers
+    return result
+    alt "No employers found"
+        back --> front : HTTP code 404
+    else "Database problem occured"
+        back --> front : HTTP code 504
+        front --> user: notify "Problem occured"
+    else "employers are found"
+        back --> front : HTTP code 200\nwith the list of employers
+        front --> user
+    end
+    loop
+        user -> front : change details
+        user -> front : update the vacancy
+        front -> front : check if the position\nand employer are provided
+        opt 
+            front --> front : position and/or employer\nare missed
+            front --> user : notify\n"Provide both: position and employer"
+        end
+        break
+            front --> front : position and employer\nare provided
+        end
+    end
+
+    front -> back : PATCH ../user/vacancies/{vacancy.id}
+    alt "the employer was changed"
+        alt "a new employer is provided"
+            back -> db : create an employer\nand update vacancy and all associated HRManagers
+            db -> employer : create
+            db -> vacancy : update
+        else "the existing employer is choosen"
+            back -> db : update vacancy and all associated HRManagers
+            db -> vacancy : update
+        end
+    else "current employer was not changed"
+        back -> db : update vacancy and all associated HRManagers
+        db -> vacancy : update
+    end
+    db --> back : result
+    alt "vacancy is not found"
+        break
+            back --> front : HTTP code 404
+            front --> user : notify "Vacancy was not found"
+        end
+    else "vacancy update failed"
+        break
+            back --> front : HTTP code 504
+            front --> user : notify "Error occured"
+        end
+    else "vacancy update is successful"
+        back --> front : HTTP code 200 \nvacancy details
+        front --> user : notify "Vacancy was updated"
+        front -> front : open vacancyPage in read-only mode
+        ref over user, front, back :Click here: [[seq4_openVacancy.puml Open vacancyPage (seq4_openVacancy.puml)]]
+    end
+@enduml

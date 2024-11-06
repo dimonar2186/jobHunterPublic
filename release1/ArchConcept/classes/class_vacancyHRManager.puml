@@ -1,0 +1,10 @@
+@startuml "vacancyHRManager class diagram"
+
+    class vacancyHRManager {
+        - id : uuid
+        - HRManager : HRManager
+        - vacancy : vacancy
+        - isDeleted : boolean
+    }
+
+@enduml

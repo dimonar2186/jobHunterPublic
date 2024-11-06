@@ -1,0 +1,13 @@
+@startuml "employer class diagram"
+
+    class employer {
+        - id : uuid
+        - name : string
+        - country : string
+        - creationDate : timestamp
+        - updateDate : timestamp
+        + create ()
+        + update ()
+    }
+
+@enduml

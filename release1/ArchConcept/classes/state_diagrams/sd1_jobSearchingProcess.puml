@@ -1,0 +1,8 @@
+@startuml "jobSearchingProcess state diagram"
+hide empty description
+    [*] --> Active : create jobSearchingProcess
+    Active --> Deleted : delete jobSearchingProcess
+    Active --> Finished : finish jobSearchingProcess
+    Active --> Archived : archive jobSearchingPRocess
+    Finished --> Deleted : delete jobSearchingProcess
+@enduml

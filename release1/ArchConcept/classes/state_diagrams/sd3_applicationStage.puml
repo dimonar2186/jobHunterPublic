@@ -1,0 +1,23 @@
+@startuml "applicationStage state diagram"
+hide empty description
+    [*] --> Active : create applicationStage\nwith orderNumber = 1
+    [*] --> Waiting : create applicationStage\nwith orderNumber > 1
+    Waiting --> Active : start
+    Waiting --> Blocked : block
+    Active --> Waiting : NewApplicationStage created\nwith NewApplicationStage.OrderNumber < ApplicationStage.OrderNumber
+    Active --> Waiting : one of previous ApplicationStages restarted
+    Active --> Passed : pass
+    Active --> Failed : fail
+    Passed --> Active : restart
+    Failed --> Active : restart
+    Failed --> Passed : pass
+    Passed --> Failed : fail
+    Passed : do / start NextApplicationStage.Status
+    Failed : do / block all next ApplicationStages
+
+    Waiting --> [*] : delete applicationStage
+    Active --> [*] : delete applicationStage
+    Passed --> [*] : delete applicationStage
+    Failed --> [*] : delete applicationStage
+    Blocked --> [*] : delete applicationStage
+@enduml

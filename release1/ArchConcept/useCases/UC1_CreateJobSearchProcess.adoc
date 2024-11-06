@@ -1,0 +1,78 @@
+= Use Case: UC1_CreateJobSearchProcess
+:doctype: article
+:toc:
+:toclevels: 1
+
+== Summary
+The user initiates a new job search process by providing parameters to efficiently track job applications.
+
+== References
+- JobSearchingProcess - the process of seeking a new job. See <<TBD link, TBD>>
+
+== Actors
+* **Primary Actor**: User
+
+== Business requirements links
+* <<../../projectDocs/brd.adoc#BR2.1, BR2.1>>
+* <<../../projectDocs/brd.adoc#BR2.2, BR2.2>>
+
+== Preconditions
+
+- User is logged into the System.
+- User is authorized to create a job searching process.
+- MainPage (see <<TBD link, TBD>>) is displayed on the user's screen.
+
+== Postconditions
+
+- The System successfully creates a JobSearchingProcess and stores it.
+- The user can view, edit, or archive the newly created process.
+
+== Trigger
+
+- User initiates a creation of a JobSearchingProcess.
+
+== Main Scenario
+
+1. System prompts User to provide parameters of a JobSearchingProcess 
+2. User can optionally enter any combination of the following parameters:
+- name for JobSearchingProcess 
+- minimum monthly salary
+- maximum monthly salary
+- one or more location
+- position
+- one or more job type (full-time / part-time / contract)
+3. User approves a JobSearchingProcess start
+4. System validates the input parameters:
+- the name for a new JobSearchingProcess is provided
+- the name for a new JobSearchingProcess is unique for the User
+5. System creates a JobSearchingProcess with provided parameters
+6. System notifies User that the JobSearchingProcess has been successfully created
+7. The System displays the JobSearchingProcess details.
+8. End of scenario
+
+== Extensions (Alternate Flows)
+.Extensions
+[%autowidth, options="header"]
+|===
+|Main Scenario step |Condition |Alternate steps to be executed
+
+|4
+|The name for a new job searching process is absent
+|1. System notifies User that the name is required +
+2. Return to the Step 2 of the Main Scenario
+
+|4
+|The name for a new job searching process was used by User before
+|1. System notifies User that the name must be unique +
+2. Return to the Step 2 of the Main Scenario
+
+|5
+|The creation of the JobSearchingProcess ends with an error
+|1. System notifies User that the error occurred +
+2. Return to the Step 2 of the Main Scenario
+
+|===
+
+== Special Requirements
+
+- The system should create the JobSearchingProcess in under 5 seconds

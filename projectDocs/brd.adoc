@@ -1,0 +1,175 @@
+= Business requirements document
+:toc:
+
+== 1. Introduction
+
+=== 1.1. Purpose of the Document
+Define the business requirements for a web application to track job application responses.
+
+=== 1.2. Scope
+The application will help job seekers manage their job applications, track interview progress, and choose offers.
+
+== 2. General Description
+
+=== 2.1. Target Audience
+- Job seekers.
+- Recent graduates.
+- Professionals changing careers.
+
+=== 2.2. Key Features
+- User registration and authentication.
+- Ability to add job applications and responses.
+- Track application stages.
+- Interactive calendar for interview scheduling.
+- Offer comparison (salary, benefits, location, etc.).
+- Generate progress reports.
+
+=== 2.3 Stakeholders
+- Me.
+- Job seekers.
+- Job search services.
+
+== 3. Business Requirements
+
+[header1]
+=== 3.1. Functional Requirements
+.Functional Requirements List
+[%autowidth]
+|===
+|BR number | Description
+
+|[[BR1]]BR1 | Authentication
+
+|[[BR1.1]]BR1.1
+|User must be able to sign up with email.
+
+|[[BR1.2]]BR1.2
+| User should be able to sign up with Google SSO.
+
+|[[BR1.3]]BR1.3
+| User must be able to enter local username to use for logging in.
+
+|[[BR1.4]]BR1.4
+| User must be able to log in with local username.
+
+|[[BR1.5]]BR1.5
+| User should be able to log in with Google SSO.
+
+|[[BR2]]BR2
+| Job seeking
+
+|[[BR2.1]]BR2.1
+| User must be able to start new job seeking process.
+
+|[[BR2.2]]BR2.2
+a| User must be able to set target values for job parameters:
+
+* monthly salary
+* location
+* position
+* job type (full-time / part-time / contract)
+
+|[[BR2.3]]BR2.3
+| User must be able to add new job application.
+
+|[[BR2.4]]BR2.4
+a| User must be able to enter vacancy description:
+
+* monthly salary range
+* job type
+* contract length
+* benefits
+* responsibilities
+* position
+* employer name
+* employer country
+* application date
+* comments
+
+|[[BR2.5]]BR2.5
+| User must be able to connect job application to miltiple HumanResourceManager
+
+|[[BR2.6]]BR2.6
+a| User must be able to edit interview stages:
+
+* add new stage
+* delete stage
+* change stage status
+* edit stage name
+
+|[[BR2.7]]BR2.7
+| User must be able to attach files to job application
+
+|[[BR2.8]]BR2.8
+a| User must be able to edit employer's details:
+
+* employer name
+* employer country
+
+|[[BR2.9]]BR2.9
+|User must be able to edit vacancy description
+
+|[[BR2.10]]BR2.10
+a| User must be able to enter job offer parametres:
+
+* monthly salary
+* job type
+* contract length
+* benefits
+* responsibilities
+* position
+* employer
+* answer deadline
+* comments
+
+|[[BR2.11]]BR2.11
+| User must be able to attach cv that was sent to apply the job
+
+|[[BR2.12]]BR2.12
+a| User must be able to change job application status to:
+
+* success
+* failed
+* processing
+
+|[[BR2.13]]BR2.12
+a| User must be able to add multiple HR's contacts:
+
+* phone number
+* messagers
+    * messager name
+    * messager nickname
+
+|[[BR2.14]]BR2.14
+| User must be able to delete HR manager from job application
+
+|[[BR2.15]]BR2.15
+| User must be able edit job searching process
+
+|[[BR2.16]]BR2.16
+| User must be able to archive job searching process
+
+|[[BR2.17]]BR2.17
+| User must be able to delete an existing vacancy in job searching process
+|===
+
+=== 3.2. Non-functional Requirements
+* *Performance*:
+    ** The application should load in less than 3 seconds.
+* *Security*:
+    ** User data must be protected with encryption.
+    ** User must be able to sign up and log in with internal application's authentication service.
+    ** User must be able to sign up and log in with Google SSO.
+* *Scalability*:
+    ** The application must support up to 2000 concurrent users.
+    ** The application must suuport up to 1000000 user accounts.
+
+== 4. Constraints
+//- The development budget should not exceed X dollars.
+- The implementation period is 12 months.
+
+== 5. Risks
+- Lack of interest from the target audience.
+- Lack of time.
+
+

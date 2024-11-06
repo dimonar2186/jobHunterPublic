@@ -1,0 +1,56 @@
+@startuml "Create vacancy sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+    database "database" as db
+    entity "vacancy" as vacancy
+    entity "employer" as employer
+    entity "applicationStage" as applicationStage
+
+    user -> front : open "create vacancy" form
+    ref over front, back, db :Click here: [[seq24_getEmployers.puml Get list of currencies (seq23_getCurrencies.puml)]]
+    ref over front, back, db :Click here: [[seq24_getEmployers.puml Get list of employers (seq24_getEmployers.puml)]]
+    front --> user : list of employers\nlist of currencies
+    loop
+        user -> front : provide vacancy details
+        front -> front : check if the position\nand employer are provided
+        opt 
+            front --> front : position and/or employer\nare missed
+            front --> user : notify\n"Provide both: position and employer"
+        end
+        break
+            front --> front : position and employer\nare provided
+        end
+    end
+    front -> front : vacancy.name =\nvacancy.position + " in " + vacancy.employer.name
+    front -> back : POST ../api/user/vacancy\ndetails and employer
+    alt "a new employer is chosen"
+        back -> db : create employer, create vacancy,\ncreate default applicationStages
+        par
+            db -> employer : create a new employer
+            db -> vacancy ** : create vacancy
+            db -> applicationStage ** : create default set
+        end
+    else
+        back -> db : create vacancy,\ncreate default applicationStages
+        par
+            db -> vacancy ** : create vacancy
+            db -> applicationStage ** : create default set
+        end
+    end
+    db --> back : creation result
+    alt "vacancy creation failed"
+        break
+            back --> front : HTTP code 504
+            front --> user : notify "Error occured"
+        end
+    else "vacancy creation is successful"
+        back --> front : HTTP code 201 \nvacancy.id
+        front --> user : notify "Vacancy was created"
+        front -> front : open vacancyPage
+        ref over user, front, back :Click here: [[seq4_openVacancy.puml Open vacancyPage (seq4_openVacancy.puml)]]
+    end
+@enduml

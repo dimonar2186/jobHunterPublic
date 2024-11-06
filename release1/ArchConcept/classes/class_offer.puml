@@ -1,0 +1,19 @@
+@startuml "offer class diagram"
+
+    class offer {
+        * id : uuid
+        - monthlySalary : float
+        - position : string
+        - jobType : array of job types
+        - contractLength : integer
+        - comments : string
+        * creationDate : timestamp
+        - updateDate : timestamp
+        - isDeleted : boolean
+        * vacancy : uuid
+        + create ()
+        + update ()
+        + delete ()
+    }
+
+@enduml

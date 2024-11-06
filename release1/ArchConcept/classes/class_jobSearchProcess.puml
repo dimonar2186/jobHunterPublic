@@ -1,0 +1,24 @@
+@startuml "jobSearchProcess class diagram"
+
+    class jobSearchProcess {
+        * id : uuid
+        * name : string
+        - minimumMonthlySalary : float
+        - maximumMonthlySalary : float
+        - currency : uuid link to currency dictionary
+        - locations : array of locations
+        - position : string
+        - jobType : array of job types
+        * creationDate : timestamp
+        - updateDate : timestamp
+        - deleteDate : timestamp
+        - createdUser : uuid
+        - status : enum
+        + create () : uuid
+        + update ()
+        + updateStatus ()
+        + delete ()
+        + createVacancy ()
+    }
+
+@enduml

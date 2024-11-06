@@ -1,0 +1,20 @@
+@startuml "HRManager class diagram"
+
+    class HRManager {
+        * id : uuid
+        * firstName : string 
+        - lastName : string
+        - secondName : string
+        '- employer : employer
+        * creationDate : timestamp
+        - updateDate : timestamp
+        - isDeleted : boolean
+        + create ()
+        + update ()
+        + delete ()
+        + createContact ()
+        + updateContact ()
+        + deleteContact ()
+    }
+
+@enduml

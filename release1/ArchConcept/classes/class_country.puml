@@ -1,0 +1,9 @@
+@startuml "country class diagram"
+
+    class country {
+        - id : uuid
+        - name : string
+        - code : string
+    }
+
+@enduml

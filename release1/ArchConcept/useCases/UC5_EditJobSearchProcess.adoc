@@ -1,0 +1,83 @@
+= Use Case: UC5_EditJobSearchProcess
+:doctype: article
+:toc:
+:toclevels: 1
+
+== Summary
+The user edits the existing JobSearchingProcess by providing parameters to increase efficiency of tracking job applications.
+
+== References
+- JobSearchingProcess - the process of seeking a new job. See <<TBD link, TBD>>
+
+== Actors
+* **Primary Actor**: User
+
+== Business requirements links
+* <<../../projectDocs/brd.adoc#BR2.15, BR2.15>>
+
+== Preconditions
+
+- User is logged into the System.
+- User is authorized to edit or archive a job searching process.
+- JobSearchingProcess exists.
+- JobSearchingProcessPage (see <<TBD link, TBD>>) is displayed on the user's screen.
+
+== Postconditions
+
+- The System successfully updates the JobSearchingProcess and stores it.
+- The user can view, edit, or archive the updated JobSearchingProcess.
+
+== Trigger
+
+- User initiates a editing of the JobSearchingProcess.
+
+== Main Scenario
+
+1. System prompts User to modify current parameters of the JobSearchingProcess 
+2. User can optionally modify any combination of the following parameters:
+- name for JobSearchingProcess 
+- minimum monthly salary
+- maximum monthly salary
+- one or more location
+- one or more position
+- one or more job type (full-time / part-time / contract)
+3. User approves the JobSearchingProcess update
+4. System validates the input parameters:
+- the name for the JobSearchingProcess is provided
+- one of conditions is met:
+    * the name for a new JobSearchingProcess is unique for the User
+    * the name is unchanged
+5. System updates the JobSearchingProcess with the provided parameters
+6. System notifies User that the JobSearchingProcess has been successfully updated
+7. The System displays the JobSearchingProcess details.
+8. End of scenario
+
+== Extensions (Alternate Flows)
+.Extensions
+[%autowidth, options="header"]
+|===
+|Main Scenario step |Condition |Alternate steps to be executed
+
+|4
+|The name for the JobSearchingProcess is absent
+|1. System notifies User that the name is required +
+2. Return to the Step 2 of the Main Scenario
+
+|4
+a|The following conditions are met:
+
+- The name for the JobSearchingProcess was used by User before
+- The name for the JobSearchingProcess was changed by User
+|1. System notifies User that the name must be unique +
+2. Return to the Step 2 of the Main Scenario
+
+|5
+|The update of the JobSearchingProcess ends with an error
+|1. System notifies User that the error occurred +
+2. Return to the Step 2 of the Main Scenario
+
+|===
+
+== Special Requirements
+
+- The system should update the JobSearchingProcess in under 3 seconds

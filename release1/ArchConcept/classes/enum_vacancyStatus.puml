@@ -1,0 +1,8 @@
+@startuml "enum for vacancy status"
+    enum vacancyStatus {
+        active
+        failed
+        success
+        deleted
+    }
+@enduml

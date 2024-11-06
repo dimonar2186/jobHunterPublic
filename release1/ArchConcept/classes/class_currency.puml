@@ -1,0 +1,10 @@
+@startuml "country class diagram"
+
+    class currency {
+        - id : uuid
+        - name : string
+        - shortName : string
+        - isoCode : string
+    }
+
+@enduml

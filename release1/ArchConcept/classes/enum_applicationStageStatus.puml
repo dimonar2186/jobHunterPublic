@@ -1,0 +1,10 @@
+@startuml "enum for applicationStage status"
+    enum applicationStageStatus {
+        active
+        waiting
+        blocked
+        passed
+        failed
+        deleted
+    }
+@enduml

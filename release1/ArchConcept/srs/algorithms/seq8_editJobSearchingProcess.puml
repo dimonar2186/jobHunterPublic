@@ -1,0 +1,28 @@
+@startuml "Edit the existing jobSearchingProcess sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+    database "database" as db
+    entity "jobSearchingProcess" as jobSearchingProcess
+
+    ref over user, front, back :Click here: [[seq7_openJobSearchingProcessesList.puml Open jobSearchingProcessPage (seq7_openJobSearchingProcessesList.puml)]]
+    ref over front, back, db :Click here: [[seq23_getCurrencies.puml Get list of currencies (seq23_getCurrencies.puml)]]
+    user -> front : edit jobSearchingProcess details
+    front -> back : PATCH ../api/user/jobSearchingProcesses/{jobSearchingProcessId}\ndetails
+    back -> db : update jobSearchingProcess.id with details
+    db -> jobSearchingProcess : update
+    db --> back : result
+    alt "Successful update"
+        back -> front : HTTP code 201
+        front --> user : jobSearchingProcessesListPage
+    else "jobSearchingProcess not found"
+        back -> front : HTTP code 404
+        front --> user : notify "jobSearchingProcess was not found"
+    else "Database error occured"
+        back -> front : HTTP code 504
+        front --> user : notify "Error occured"
+    end
+@enduml

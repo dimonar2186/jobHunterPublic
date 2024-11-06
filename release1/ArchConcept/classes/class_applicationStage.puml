@@ -1,0 +1,15 @@
+@startuml "applicationStage class diagram"
+
+    class applicationStage {
+        * id : uuid
+        * orderNumber : integer
+        * name : string
+        * status : enum
+        * vacancy : uuid
+        + create ()
+        + update ()
+        + delete ()
+        + updateStatus ()
+    }
+
+@enduml

@@ -1,0 +1,48 @@
+@startuml "Add a new HRManager to the existing vacancy sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+    database "database" as db
+    entity "HRManager" as HRManager
+    entity "contact" as contact
+
+    user -> front : initiate adding a new HRManager\nto the existing vacancy
+    front --> user : request for HRManager's details and contact
+
+    loop
+        user -> front : provide HRManager's details
+        front -> front : check if the HRManager.name\nand contact are provided
+        opt 
+            front --> front : applicationStage.name is missed
+            front --> user : notify\n"Provide: HRManager.name"
+        end
+        break
+            front --> front : HRManager.name and contact\nare provided
+        end
+    end
+
+    front -> back : POST ../user/HRManagers/
+    back -> db : create new HRManager and contact\nfor the vacancy
+    db -> contact ** : create
+    db -> HRManager ** : create
+    db --> back : result
+    alt "vacancy is not found"
+        break
+            back --> front : HTTP code 404
+            front --> user : notify "The vacancy was not found"
+        end
+    else "HRManager or contact creation failed"
+        break
+            back --> front : HTTP code 504
+            front --> user : notify "Error occured"
+        end
+    else "HRManager and contact creation is successful"
+        back --> front : HTTP code 200 \nHRManager details
+        front -> front : update vacancyPage
+        front --> user : notify "HRManager was created"
+    end
+
+@enduml

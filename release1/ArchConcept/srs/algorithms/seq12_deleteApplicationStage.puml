@@ -1,0 +1,33 @@
+@startuml "Delete the existing applicationStage of the existing vacancy sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+    database "database" as db
+    entity "applicationStage" as applicationStage
+
+    user -> front : delete of the existing applicationStage
+    front -> back : DELETE ../user/applicationStages/{applicationStageId}
+    back -> db : select all following applicationStages
+    back -> db : update orderNumber and/or status\nof the applicationStage\nand\n \nof all following applicationStages
+    db -> applicationStage !! : delete applicationStage\nand update all following applicationStages
+    db --> back : result
+    alt "applicationStage is not found"
+        break
+            back --> front : HTTP code 404
+            front --> user : notify "applicationStage was not found"
+        end
+    else "applicationStage deletion failed"
+        break
+            back --> front : HTTP code 504
+            front --> user : notify "Error occured"
+        end
+    else "applicationStage was deleted successfully"
+        back --> front : HTTP code 204 \napplicationStage details
+        front -> front : update vacancyPage
+        front --> user : notify "applicationStage was deleted"
+    end
+
+@enduml

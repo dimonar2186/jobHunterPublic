@@ -1,0 +1,25 @@
+@startuml "Delete the existing vacancy sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+    database "database" as db
+
+    ref over user, front, back :Click here: [[seq3_openJobSearchingProcess.puml Open jobSearchingProcessPage (seq3_openJobSearchingProcess.puml)]]
+    user -> front : delete vacancy
+    front -> back : DELETE ../api/user/vacancies/{vacancy.id}
+    back -> db : delete\nvacancy with vacancy.id\nand assotiated:\noffer, VacanciesToJobTypes,\nVacanciesToHRManagers,\nlocations
+    return
+    alt "Successful deletion"
+        back -> front : HTTP code 204
+        front --> user : notify "Vacancy was deleted"
+    else "Vacancy not found"
+        back -> front : HTTP code 404
+        front --> user : notify "Vacancy was not found"
+    else "Database error occured"
+        back -> front : HTTP code 504
+        front --> user : notify "Error occured"
+    end
+@enduml

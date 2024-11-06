@@ -1,0 +1,13 @@
+@startuml "salaryRange class diagram"
+
+    class salaryRange {
+        * id : uuid
+        - minimumMonthlySalary : float
+        - maximumMonthlySalary : float
+        - currency : uuid link to currency dictionary
+        + getAverageSalary () : float
+        + toString () : string
+        'converts float to string like "from 1000 to 9999 USD"
+    }
+
+@enduml

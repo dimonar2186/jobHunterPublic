@@ -1,0 +1,19 @@
+@startuml "HRContact class diagram"
+
+    class HRContact {
+        * id : uuid
+        - messenger : string
+        ' messenger is a contact type. For exapmle "phone" or "telegram" or "messanger"
+        - value : string
+        ' value is a specific id in a selected contact type. Like a phone number or nickname in messanger
+        * creationDate : timestamp
+        - updateDate : timestamp
+        * preferable : boolean
+        - HRManager : HRManager
+        - isDeleted : boolean
+        + create () : uuid
+        + update ()
+        + delete ()
+    }
+
+@enduml

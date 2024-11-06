@@ -1,0 +1,38 @@
+@startuml "Delete the existing HRManager from the existing vacancy sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+    database "database" as db
+    entity "vacanciesToHRManagers" as vacanciesToHRManagers
+
+    user -> front : delete the existing HRManager\nfrom the existing vacancy
+    front -> user : request for confirmation
+    user --> front
+    opt "declined"
+        break
+        end
+    end
+    
+    front -> back : DELETE ../user/HRManagers/{HRManagerId}\nfrom vacancy.id
+    back -> db !! : DELETE vacanciesToHRManagers associated\nwith HRManagerId and vacancy.id
+    db --> back : result
+    alt "vacancy or HRManager are not found"
+        break
+            back --> front : HTTP code 404
+            front --> user : notify "The vacancy and/or the HRManager\nwere not found"
+        end
+    else "Deletion failed"
+        break
+            back --> front : HTTP code 504
+            front --> user : notify "Error occured"
+        end
+    else "vacanciesToHRManagers was deleted successfully"
+        back --> front : HTTP code 204
+        front -> front : update vacancyPage
+        front --> user : notify "HRManager was deleted"
+    end
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml "file class diagram"
+
+    class file {
+        - id : uuid
+        - file : blob
+        - creationDate : timestamp
+        - vacancy : vacancy
+        - fileType : enum
+        - fileExtension : string
+        - comments : string
+        + create ()
+        + delete ()
+    }
+
+@enduml

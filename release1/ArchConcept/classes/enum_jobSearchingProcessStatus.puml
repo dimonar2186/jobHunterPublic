@@ -1,0 +1,8 @@
+@startuml "enum for jobSearchingProcess status"
+    enum jobSearchingProcessStatus {
+        active
+        archived
+        finished
+        deleted
+    }
+@enduml

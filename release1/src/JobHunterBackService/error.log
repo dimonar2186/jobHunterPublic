@@ -1,0 +1,58 @@
+2024/11/05 23:57:20 employer's update is provided
+2024/11/05 23:57:20 location deletion failed  pq: unexpected Parse response 'C'
+2024/11/05 23:57:20 failed to delete locations for emp 0c34423b-39df-43b0-9527-23ae5f92be8e
+2024/11/05 23:58:32 employer's update is provided
+2024/11/05 23:58:32 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: 0c34423b-39df-43b0-9527-23ae5f92be8e, employers
+2024/11/05 23:58:32 location deletion failed  pq: unexpected Parse response 'C'
+2024/11/05 23:58:32 failed to delete locations for emp 0c34423b-39df-43b0-9527-23ae5f92be8e
+2024/11/05 23:59:57 employer's update is provided
+2024/11/05 23:59:57 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: 0c34423b-39df-43b0-9527-23ae5f92be8e, employers
+2024/11/05 23:59:57 SELECT EXISTS(SELECT 1 FROM public.countries WHERE id= $1)
+2024/11/05 23:59:57 Failed to check country with id:  45fa7305-fec6-4108-b42e-ccca4b10ac40
+2024/11/05 23:59:57 failed to save emp location
+2024/11/06 00:01:32 employer's update is provided
+2024/11/06 00:01:32 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: 0c34423b-39df-43b0-9527-23ae5f92be8e, employers
+2024/11/06 00:01:32 Types: string, string
+2024/11/06 00:01:32 SELECT EXISTS(SELECT 1 FROM public.countries WHERE id= $1)
+2024/11/06 00:01:32 Failed to check country with id:  45fa7305-fec6-4108-b42e-ccca4b10ac40
+2024/11/06 00:01:32 failed to save emp location
+2024/11/06 00:05:19 employer's update is provided
+2024/11/06 00:05:20 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: 0c34423b-39df-43b0-9527-23ae5f92be8e, employers
+2024/11/06 00:05:20 location deletion failed  pq: unexpected Parse response 'C'
+2024/11/06 00:05:20 failed to delete locations for emp 0c34423b-39df-43b0-9527-23ae5f92be8e
+2024/11/06 00:10:53 employer's update is provided
+2024/11/06 00:10:53 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: 0c34423b-39df-43b0-9527-23ae5f92be8e, employers
+2024/11/06 00:10:53 SELECT EXISTS(SELECT 1 FROM public.countries WHERE id= $1)
+2024/11/06 00:30:10 employer's update is provided
+2024/11/06 00:30:10 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: 0c34423b-39df-43b0-9527-23ae5f92be8e, employers
+2024/11/06 00:30:10 SELECT EXISTS(SELECT 1 FROM public.countries WHERE id= $1)
+2024/11/06 01:15:07 need to delete employer
+2024/11/06 01:15:07 failed to update emp, because this id is not found 0c34423b-39df-43b0-9527-23ae5f92be8e
+2024/11/06 01:15:33 need to delete employer
+2024/11/06 01:15:33 failed to update emp, because this id is not found ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a
+2024/11/06 01:16:19 need to delete employer
+2024/11/06 01:16:19 failed to update emp, because this id is not found ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a pq: syntax error at or near "$1"
+2024/11/06 01:17:45 need to delete employer
+2024/11/06 01:17:45 failed to update emp, because this id is not found ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a pq: could not determine data type of parameter $1
+2024/11/06 01:18:43 need to delete employer
+2024/11/06 01:18:43 failed to update emp, because this id is not found ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a sql: Scan error on column index 0, name "id": destination not a pointer
+2024/11/06 01:19:26 need to delete employer
+2024/11/06 01:19:26 try to find id:  ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a
+2024/11/06 01:19:26 failed to update emp, because this id is not found ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a sql: Scan error on column index 0, name "id": destination not a pointer
+2024/11/06 01:20:05 need to delete employer
+2024/11/06 01:20:05 Failed to extract employer with id:  ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a
+2024/11/06 01:20:05 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a, employers
+2024/11/06 01:20:05 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a, employers
+2024/11/06 01:20:05 failed to delete employer with ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a : failed to delete the employer pq: trailing junk after numeric literal at or near "9d"
+2024/11/06 01:23:13 need to delete employer
+2024/11/06 01:23:13 Failed to extract employer with id:  ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a
+2024/11/06 01:23:13 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a, employers
+2024/11/06 01:23:13 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a, employers
+2024/11/06 01:23:13 failed to delete employer with ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a : failed to delete the employer pq: trailing junk after numeric literal at or near "9d"
+2024/11/06 01:27:40 need to delete employer
+2024/11/06 01:27:40 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a, employers
+2024/11/06 01:27:40 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a, employers
+2024/11/06 01:27:40 failed to delete employer with ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a : failed to delete the employer pq: trailing junk after numeric literal at or near "9d"
+2024/11/06 01:28:39 need to delete employer
+2024/11/06 01:28:39 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a, employers
+2024/11/06 01:28:39 Executing query: DELETE FROM public.locations WHERE object_id = $1 AND table_type = $2 with parameters: ceaf47a0-9d02-4b1b-b2a9-fca8e48dc02a, employers

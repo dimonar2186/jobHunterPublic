@@ -1,0 +1,344 @@
+= Use Case: UC4_EditVacancy
+:doctype: article
+:toc:
+:toclevels: 1
+
+== Summary
+The user edit the existing Vacancy they applied for to track applications more efficiently.
+
+== References
+- Vacancy - a job vacancy the user somehow applied for. See <<TBD link, TBD>>
+- JobSearchingProcess - the process of seeking a new job. See <<TBD link, TBD>>
+- ApplicationStage - a stage that the user must go through to apply for the job. See <<TBD link, TBD>>
+- HRcontact - a contact of and HRManager. See <<TBD link, TBD>>
+- HRManager - Human resource manager who contacts with the User. See <<TBD link, TBD>
+
+== Actors
+* **Primary Actor**: User
+
+== Business requirements links
+* <<../../projectDocs/brd.adoc#BR2.5, BR2.5>>
+* <<../../projectDocs/brd.adoc#BR2.6, BR2.6>>
+* <<../../projectDocs/brd.adoc#BR2.8, BR2.8>>
+* <<../../projectDocs/brd.adoc#BR2.9, BR2.9>>
+* <<../../projectDocs/brd.adoc#BR2.12, BR2.12>>
+
+
+== Preconditions
+
+- User is logged into the System.
+- User is authorized to edit or add or delete a ApplicationStage.
+- Vacancy exists.
+- VacancyPage (see <<TBD link, TBD>>) is displayed on the user's screen.
+
+== Postconditions
+
+- One of the following postconditions:
+    * The System successfully updates the Vacancy and stores it.
+    * The System successfully updates the existing ApplicationStage and stores it.
+    * The System successfully adds a new ApplicationStage and stores it.
+    * The System successfully deletes the existing ApplicationStage.
+- The user can view the Vacancy in the VacancyPage (see <<TBD link, TBD>>).
+
+== Trigger
+
+- User initiates editing of the existing Vacancy.
+
+== Main Scenario
+
+1. System prompts User to do one of the following actions:
+- provide changes of parameters for the Vacancy
+- choose the existing ApplicationStage to delete
+- add a new ApplicationStage
+- change the name of the existing ApplicationStage
+- add an HRManager to the Vacancy
+- change the existing HRManager of the Vacancy
+- change a status of the existing ApplicationStage
+- add an offer
+- update the existing offer details
+- update HRManager details
+- add file
+- remove file
+2. User optionally changes any combination of the following Vacancy details:
+- minimum possible monthly salary
+- maximum possible monthly salary
+- job type (full-time / part-time / contract)
+- contract length
+- benefits
+- responsibilities
+- position
+- employer name
+- employer country
+- application date
+- comments
+3. User approves changes
+4. System validates that simultaneously following conditions are met:
+- at least one of the following parameters is changed:
+    * the position of the vacancy
+    * the employer name
+- the position is not empty
+- the employer name is not empty
+5. System updates the Vacancy:
+- with the provided parameters,
+- with name = Vacancy.Position + " in" + Vacancy.EmployerName
+6. System notifies User that the Vacancy has been successfully updated
+7. System displays the Vacancy details
+8. End of scenario
+
+== Extensions (Alternate Flows)
+.Extensions
+[%autowidth, options="header"]
+|===
+|Main Scenario step |Condition |Alternate steps to be executed
+
+|4
+a|At least one of the following conditions is met:
+
+    * simultaneously:
+        ** The employer name for the Vacancy is empty
+        ** The employer name is changed
+    * simultaneously:
+        ** The position for the Vacancy is empty
+        ** The position is changed
+a|. System notifies User that both of parameters must be entered:
+    * The employer name
+    * The position
+. Return to the Step 2 of the Main Scenario
+
+|4
+a|Both of conditions are met:
+
+    * The employer name has not been changed
+    * The position has not been changed
+a|. System updates the Vacancy with the provided parameters
+. *If* update is successful *then* return to the Step 6 of the Main Scenario
+. *Else*
+    .. System notifies User that the error occurred
+    .. Return to the Step 2 of the Main Scenario
+
+|5
+|The update of the Vacancy ends with an error
+a|. System notifies User that the error occurred
+. Return to the Step 2 of the Main Scenario
+
+|1
+a|The User:
+
+    * chooses a place for adding a new ApplicationStage
+    * initiates an adding of a new ApplicationStage
+a|. System prompts User to provide an ApplicationStage.Name
+. User optionally enters an ApplicationStage.Name
+. *If* User set an ApplicationStage.Name *then* System creates an ApplicationStage with attributes:
+    * provided name
+    * specified position
+. *Else*
+.. System creates an ApplicationStage with attributes:
+    * default name
+    * specified position
+. *If* adding is successful *then* return to the Step 6 of the Main Scenario
+. *Else*
+.. System notifies User that the error occurred
+.. Return to the Step 2 of the Main Scenario
+
+|1
+a|The User:
+
+    * chooses the existing ApplicationStage
+    * selects the place to move the ApplicationStage
+a|. System apdates oreder of ApplicationStages
+. *If* update is successful *then* return to the Step 6 of the Main Scenario
+. *Else*
+.. System notifies User that the error occurred
+.. Return to the Step 2 of the Main Scenario
+
+|1
+a|The User:
+
+    * chooses the existing ApplicationStage
+    * initiates deleting of the ApplicationStage
+a|. System prompts User to confirm deleting of the ApplicationStage
+. System deletes the ApplicationStage
+. *If* deleting is successful *then* System notifies User that deleting is successful
+. *Else*
+.. System notifies User that the error occurred
+.. Return to the Step 2 of the Main Scenario
+
+|1
+a|The User:
+
+    * chooses the existing ApplicationStage
+    * initiates status update of the ApplicationStage
+a|. System prompts User to choose a new status of the ApplicationStage
+. System updates the status of the ApplicationStage
+- System updates statuses of all ApplicationsStages following the updating one
+. *If* update of all ApplicationStages is successful *then* System notifies User that update is successful
+. *Else*
+.. System rolls back all updates
+.. System notifies User that the error occurred
+.. Return to the Step 2 of the Main Scenario
+
+|1
+a|The User:
+
+    * chooses the existing ApplicationStage
+    * initiates a name change of the existing ApplicationStage
+a|. System prompts User to provide a new name for the ApplicationStage 
+. *If* a new name is unique among all of the ApplicationStage of the Vacancy *then* System updates the ApplicationStage with a new name
+. *Else*
+.. System notifies User that name must be unique
+.. Return to the Step 1 of this alternative scenario
+. *If* an update is successful *then* return to the Step 6 of the Main Scenario
+. *Else*
+.. System notifies User that the error occurred
+.. Return to the Step 2 of the Main Scenario
+
+|1
+|The User initiates an adding of a new HRManager to the Vacancy
+a|. Systems searches HRManagers assosiated with the employer name of the Vacancy
+. System provides the list of HRManagers
+. *If* User selects one of the HRManagers from the list *then* System connects the Vacancy with HRManager
+. *Else*
+.. User adds a new HRManager
+.. System prompts User to provide parameters of a new HRManager:
+    * Required:
+        ** HRManager's first name
+    * Optional:
+        ** HRManager's second name
+        ** HRManager's last name
+    * At least one of contacts is required:
+        ** phone number
+        ** email
+        ** combination of
+            *** messanger's type
+            *** messanger's nickname
+.. User approve adding
+.. System creates a new HRManager with provided parameters
+.. **For** every provided contact System creates a HRContact with provided parameters
+.. *If* creation of HRManager and all HRContacts is successful *than*
+... System connects the Vacancy with the HRManager
+... Return to the Step 6 of the Main Scenario
+.. *Else*
+... System notifies User that the error occurred
+... Return to the Step 1 of this Alterantive Scenario
+
+|1
+|The User initiantes a deleting of the existing HRManager from the Vacancy
+a|. System prompts User to confirm a deleting
+. *If* User confirms *then*
+.. System disconnect the Vacancy from the HRManager
+.. System deletes the HRManager
+.. *If* deleting is successful *then* Return to the Step 6 of the Main Scenario
+.. *Else*
+... System rolls back the disconnection of the Vacancy and HRManager
+... System notifies User that the error occurred
+... Return to the Step 1 of this Alterantive Scenario
+
+|1
+a|The User:
+
+    * chooses the existing ApplicationStage
+    * initiantes a change of a status of the existing ApplicationStage
+a|. User selects the status of the existing ApplicationStage
+. System updates the status of the ApplicationStage
+. *If* update is successful *then* Return to the Step 6 of the Main Scenario
+. *Else*
+.. System notifies User that the error occurred
+.. Return to the Step 1 of the Main Scenario
+
+|1
+|The User initiantes an adding of an Offer
+a|. System prompts the User to provide parameters of an Offer
+. User can provide any combination of the following parameters:
+* monthly salary
+* position
+* job type
+* contract length
+* comments
+. System creates an Offer associated with the Vacancy using provided parameters
+. *If* creation is successful *then*
+.. System notifies the User about successful offer creation
+.. System displays the Vacancy details
+. *Else*
+.. System notifies User that the error occurred
+.. Return to the Step 1 of the Main Scenario
+
+|1
+|The User initiantes an update of the existing Offer 
+a|. System prompts the User to provide parameters of an Offer
+. User can provide any combination of the following parameters:
+* monthly salary
+* position
+* job type
+* contract length
+* comments
+. System updates the existing Offer associated with the Vacancy with provided parameters
+. *If* update is successful *then*
+.. System notifies the User about successful offer update
+.. System displays the Vacancy details
+. *Else*
+.. System notifies User that the error occurred
+.. Return to the Step 1 of the Main Scenario
+
+|1
+a|The User:
+
+    * chooses the existing HRManager
+    * initiantes a change details of the existing HRManager
+a|. System prompts the User to provide parameters of an HRManager
+. User can provide any combination of the following parameters:
+    * Required:
+        ** HRManager's first name
+    * Optional:
+        ** HRManager's second name
+        ** HRManager's last name
+    * At least one of contacts is required:
+        ** phone number
+        ** email
+        ** combination of
+            *** messanger's type
+            *** messanger's nickname
+. System updates the existing HRManager associated with the Vacancy with provided parameters
+. **For** every new contact System creates a new HRContact with provided parameters
+. **For** every deleted contact
+.. System disconnects HRManager from HRContact
+.. System deletes HRContact
+. *If* all updates are successful *then*
+.. System notifies the User about successful HRManager update
+.. System displays the Vacancy details
+. *Else*
+.. System rolls back all changes
+.. System notifies User that the error occurred
+.. Return to the Step 1 of the Main Scenario
+
+|1
+|The User attaches file to the Vacancy
+a|. System prompts file type
+. User must provide file type
+. System uploads the file
+. System creates a File with uploaded file and file type
+. *If* creation is successful *then*
+.. System notifies the User about successful file uploading
+.. System displays the Vacancy details
+. *Else*
+.. System rolls back all changes
+.. System notifies User that the error occurred
+.. Return to the Step 1 of the Main Scenario
+
+|1
+|The User deletes file from the Vacancy
+a|. System prompts User's confirmation
+. User approves deletion
+. System deletes the file
+. *If* deletion is successful *then*
+.. System notifies the User about successful file deletion
+.. System displays the Vacancy details
+. *Else*
+.. System rolls back changes
+.. System notifies User that the error occurred
+.. Return to the Step 1 of the Main Scenario
+
+|===
+
+== Special Requirements
+
+- The system should add the Vacancy and ApplicationStages in under 5 seconds

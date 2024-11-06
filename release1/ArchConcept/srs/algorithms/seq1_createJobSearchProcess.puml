@@ -1,0 +1,31 @@
+@startuml "Create jobSearchingProcess sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationsFront" as front
+    participant "applicationsBack" as back
+    database "database" as db
+    entity "jobSearchingProcess" as jobSearchingProcess
+
+    user -> front : open createJobSearchingProccessPage
+    ref over front, back, db :Click here: [[seq23_getCurrencies.puml Get list of currencies (seq23_getCurrencies.puml)]]
+    return
+
+    user -> front : create jobSearchingProcess
+    front -> back : POST ../api/jobSearchingProcess
+    back -> db : create jobSeat=rchingProcess
+    db -> jobSearchingProcess ** : create
+    db --> back : creation result \njobSearchingProcess.id
+    alt "creation successful"
+        back --> front : HTTP code 201 \njobSearchingProcess.id
+        front -> front : open jobSearchingProcessPage for jobSearchingProcess.id
+        ref over user, front, back, jobSearchingProcess :Click here: [[seq3_openJobSearchingProcess.puml Open jobSearchingProcessPage (seq3_openJobSearchingProcess.puml)]]
+    else "jobSearchingProcess.name is already used"
+        back --> front : HTTP code 409
+        front --> user : notify "The name is busy. Choose another name"
+    else "creation finished with error"
+        back -> front : HTTP code 500
+        front -> user : notificate "Error occured"
+    end
+@enduml

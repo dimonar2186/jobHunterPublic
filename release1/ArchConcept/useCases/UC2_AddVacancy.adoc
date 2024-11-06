@@ -1,0 +1,97 @@
+= Use Case: UC2_AddVacancy
+:doctype: article
+:toc:
+:toclevels: 1
+
+== Summary
+The user adds a new vacancy they applied for to track applications more efficiently.
+
+== References
+- Vacancy - a job vacancy the user somehow applied for. See <<TBD link, TBD>>
+- JobSearchingProcess - the process of seeking a new job. See <<TBD link, TBD>>
+- ApplicationStage - a stage that the user must go through to apply for the job. See <<TBD link, TBD>>
+
+== Actors
+* **Primary Actor**: User
+
+== Business requirements links
+* <<../../projectDocs/brd.adoc#BR2.2, BR2.3>>
+* <<../../projectDocs/brd.adoc#BR2.3, BR2.4>>
+
+== Preconditions
+
+- User is logged into the System.
+- User is authorized to add Vacancy.
+- JobSearchingProcess exists.
+- JobSearchingProcessPage (see <<TBD link, TBD>>) is displayed.
+
+== Postconditions
+
+- The System successfully creates the Vacancy and stores it.
+- The System successfully creates ApllicationStages and stores them.
+- The user can view the Vacancy in the VacancyPage (see <<TBD link, TBD>>).
+
+== Trigger
+
+- User initiates adding a new Vacancy.
+
+== Main Scenario
+
+1. System prompts User to provide parameters for the Vacancy 
+2. User can optionally enter any combination of the following Vacancy details:
+- minimum possible monthly salary
+- maximum possible monthly salary
+- job type (full-time / part-time / contract)
+- contract length
+- benefits
+- responsibilities
+- position
+- Vacancy opening date
+- employer name
+- employer country
+- application date
+- comments
+3. User approves the Vacancy adding
+4. System validates the input parameters:
+- the employer name for the Vacancy is provided,
+- the position for the Vacancy is provided.
+5. System creates the Vacancy:
+- with the provided parameters for the JobSearchingProcess
+- with name = Vacancy.Position + "in" + Vacancy.EmployerName
+6. System creates default ApplicationStages for the Vacancy by the algorithm (see <<TBD link, TBD>>)
+7. System notifies User that the Vacancy has been successfully created
+8. System displays the Vacancy details.
+9. End of scenario
+
+== Extensions (Alternate Flows)
+.Extensions
+[%autowidth, options="header"]
+|===
+|Main Scenario step |Condition |Alternate steps to be executed
+
+|4
+a|All of the following conditions are met:
+
+- The employer name for the Vacancy is not set
+- The position for the Vacancy is not set
+a|. System notifies User that all of next parameters must be entered:
+    - employer name
+    - position
+. Return to the Step 2 of the Main Scenario
+
+|5
+|The creation of the Vacancy ends with an error
+a|. System notifies User that the error occurred
+. Return to the Step 2 of the Main Scenario
+
+|6
+|The creation of the default ApplicationStages ends with an error
+a|. System deletes the Vacancy
+. System notifies User that the error occurred
+. Return to the Step 2 of the Main Scenario
+
+|===
+
+== Special Requirements
+
+- The system should add the Vacancy and ApllicationStages in under 5 seconds

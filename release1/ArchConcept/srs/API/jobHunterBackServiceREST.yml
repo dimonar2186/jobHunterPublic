@@ -1,0 +1,1053 @@
+openapi: '3.0.3'
+info:
+  title: API Title
+  version: '1.1'
+  description: 'This is API for the jobHunter. It provides basic services'
+servers:
+  - url: https://jobHunter.org/
+paths:
+  /user/jobSearchingProcesses:
+    get:
+      tags:
+        - jobSearchingProcess
+      summary: 'Returns a list of jobSearchingProcesses associated with current user'
+      responses:
+        '200':
+          description: A list of jobSearchingProcesses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/jobSearchingProcessResponse'
+        '403':
+          description: No permission
+        '404':
+          description: Object not found
+        '504' :
+          description: something went wrong
+    post:
+      tags:
+        - jobSearchingProcess
+      summary: create a new jobSearchingProcess
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/jobSearchingProcessBase'
+      responses:
+        '201':
+          description: successful creation
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/jobSearchingProcessResponse'
+        '403':
+          description: action is not allowed
+        '504':
+          description: something went wrong
+  /user/jobSearchingProcesses/{jobSearchingProcessId}:
+    get:
+      tags:
+        - jobSearchingProcess
+      summary: Get properties of a specified jobSearchingProcess
+      parameters:
+        - name: jobSearchingProcessId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: jobSearchingProcess with a list of vacancies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobSearching:
+                    $ref: '#/components/schemas/jobSearchingProcessResponse'
+                  vacancies:
+                    type: array 
+                    items: 
+                      $ref: '#/components/schemas/vacancyResponse'   
+        '403':
+          description: No permission
+        '404':
+          description: Object not found
+        '504' :
+          description: something went wrong
+    patch:
+      tags:
+        - jobSearchingProcess
+      summary: update existing jobSearchingProcess
+      parameters:
+        - name: jobSearchingProcessId
+          in: path
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+                - $ref : '#/components/schemas/jobSearchingProcessBase'
+                - properties:
+                    status:
+                      type : string
+                      enum : [active, archived, finished, deleted]
+      responses:
+        '201':
+          description: successful update
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/jobSearchingProcessResponse'
+        '403':
+          description: action is not allowed
+        '404':
+          description: object not found
+        '504':
+          description: something went wrong
+    delete:
+      tags:
+        - jobSearchingProcess
+      summary: delete the existing jobSearchingProcess
+      parameters:
+        - name : jobSearchingProcessId
+          in : path
+          schema :
+            type : string
+            format : uuid
+          required: true
+      responses:
+        '204':
+          description: successful
+        '403':
+          description: no permission
+        '404':
+          description: not found
+        '504':
+          description: something went wrong
+  /user/vacancies:
+    post:
+      tags:
+        - vacancy
+      summary: create a new vacancy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    jobSearchingProcessId:
+                      type: string
+                      nullable: false
+                      format: uuid
+                - $ref : '#/components/schemas/vacancyBase'
+              required:
+                - jobSearchingProcessId
+      responses:
+        '201':
+          description: successful vacancy creation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref : '#/components/schemas/vacancyResponse'
+                  - type: object
+                    properties:
+                      jobSearchingProcessId:
+                        type: string
+                        nullable: false
+                        format: uuid
+        '403':
+          description: no permission
+        '404':
+          description: not found
+        '504':
+          description: something went wrong
+  /user/vacancies/{vacancyIdParam}:
+    get:
+      tags:
+        - vacancy
+      summary: Get specified vacancy
+      parameters:
+        - $ref : '#/components/parameters/vacancyIdParam'
+      responses:
+        '200':
+          description: vacancy is found
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref : '#/components/schemas/vacancyResponse'
+                  - type: object
+                    properties:
+                      jobSearchingProcessId:
+                        type: string
+                        nullable: false
+                        format: uuid
+        '403':
+          description: No permission
+        '404':
+          description: Object not found
+        '504':
+          description: something went wrong
+    patch:
+      tags:
+        - vacancy
+      summary : Update the existing vacancy
+      parameters:
+        - $ref : '#/components/parameters/vacancyIdParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/vacancyBase'
+      responses:
+        '200':
+          description: successful update
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref : '#/components/schemas/vacancyResponse'
+                  - type: object
+                    properties:
+                      jobSearchingProcessId:
+                        type: string
+                        nullable: false
+                        format: uuid
+        '403':
+          description: No permission
+        '404':
+          description: Object not found
+        '504':
+          description: something went wrong
+    delete:
+      tags:
+        - vacancy
+      summary: delete specific vacancy
+      parameters:
+        - $ref : '#/components/parameters/vacancyIdParam'
+      responses:
+        '204':
+          description: successfully deleted
+        '403':
+          description: no permission
+        '404':
+          description: not found
+        '504':
+          description: something went wrong
+  /user/HRManagers:
+    post:
+      tags:
+        - HRManager
+      summary: Creates a new HRManager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/HRManagerBase'
+                - anyOf:
+                  - $ref: '#/components/schemas/vacancyId'
+                  - $ref: '#/components/schemas/HRContactBase'
+      responses:
+        '201':
+          description: successful creation
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/HRManagerResponse'
+        '403' :
+          description: No permission
+        '404':
+          description: Object not found
+        '504':
+          description: something went wrong
+  /user/HRMAnagers/{HRManagerId}:
+    get:
+      tags:
+        - HRManager
+      summary: Get specific HRManager of the vacancy
+      parameters:
+        - $ref : '#/components/parameters/HRManagerId'
+      responses:
+        '200' :
+          description: The HRManager with a list of contacts
+          content:
+            application/json :
+              schema :
+                type : object
+                properties:
+                  HRManager:
+                    $ref : '#/components/schemas/HRManagerResponse'
+                  contacts:
+                    type: array
+                    items:
+                      $ref : '#/components/schemas/HRContactResponse'
+        '403' :
+          description: No permission
+        '404':
+          description: Object not found
+    delete:
+      tags:
+        - HRManager
+      summary: Delete specific HRManager
+      parameters:
+        - $ref : '#/components/parameters/HRManagerId'
+      responses:
+        '204' :
+          description: HRManager was deleted
+        '403' :
+          description: No permission
+        '404':
+          description: Object not found
+    patch:
+      tags:
+        - HRManager
+      summary: Update specific HRManager of the vacancy
+      parameters:
+        - $ref : '#/components/parameters/HRManagerId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/HRManagerBase'
+      responses:
+        '200' :
+          description: The updated HRManager with a list of contact
+          content:
+            application/json :
+              schema :
+                type : object
+                properties:
+                  HRManager:
+                    $ref : '#/components/schemas/HRManagerResponse'
+                  contacts:
+                    type: array
+                    items:
+                      $ref : '#/components/schemas/HRContactResponse'
+        '403' :
+          description: No permission
+        '404':
+          description: Object not found
+  /user/applicationStages:
+    post:
+      tags:
+        - applicationStage
+      summary: Create a new applicationStage
+      requestBody:
+        content:
+          application/json:
+            schema :
+              allOf:
+                - $ref : '#/components/schemas/applicationStageBase'
+                - $ref: '#/components/schemas/vacancyId'
+      responses:
+        '201' :
+          description: A list of applicationStages with a created one
+          content:
+            application/json:
+              schema :
+                type: object
+                properties:
+                  vacancyId:
+                    type: string
+                    format: uuid
+                    nullable: false
+                  applicationStages:
+                    type : array
+                    items:
+                      $ref : '#/components/schemas/applicationStageResponse'
+        '403':
+          description: No permission
+        '404':
+          description: Vacancy or applicationStage not found
+        '504':
+          description: something went wrong
+  /user/applicationStages/{applicationStageId}:
+    delete:
+      tags:
+        - applicationStage
+      summary: update applicationStage
+      parameters:
+        - $ref : '#/components/parameters/applicationStageId'
+      responses:
+        '204' :
+          description: applicationSrage was deleted successfully
+        '403':
+          description: No permission
+        '404':
+          description: Vacancy or applicationStage not found
+        '504':
+          description: something went wrong
+    patch:
+      tags:
+        - applicationStage
+      summary: update status of applicationStage
+      parameters:
+        - $ref : '#/components/parameters/applicationStageId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/applicationStageBase'
+      responses:
+        '201' :
+          description: successful status update
+          content:
+            application/json:
+              schema :
+                type: object
+                properties:
+                  vacancyId:
+                    type: string
+                    format: uuid
+                    nullable: false
+                  applicationStages:
+                    type : array
+                    items:
+                      $ref : '#/components/schemas/applicationStageResponse'
+        '403':
+          description: No permission
+        '404':
+          description: Vacancy or applicationStage not found  
+        '504':
+          description: something went wrong
+  /user/HRManagers/{HRManagerId}/contacts:
+    get:
+      tags:
+        - Contact
+      summary: Returns list of contacts of the HRManager
+      parameters:
+        - $ref : '#/components/parameters/HRManagerId'
+      responses:
+        '200' : 
+          description: A list of contacts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref : '#/components/schemas/HRContactResponse'
+        '403' :
+          description: action is not allowed
+        '504' :
+          description: something went wrong
+    post:
+      tags:
+        - Contact
+      summary: creates a new HRManager contact
+      parameters:
+        - $ref : '#/components/parameters/HRManagerId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contacts:
+                  type: array
+                  items:
+                    $ref : '#/components/schemas/HRContactBase'
+      responses:
+        '201' : 
+          description: A list of contacts with the new created contact
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref : '#/components/schemas/HRContactResponse'
+        '403' :
+          description: action is not allowed
+        '504' :
+          description: something went wrong
+  /user/HRManagers/{HRManagerId}/contacts/{contactId}:
+    get:
+      tags:
+        - Contact
+      summary: Returns specific contact of the HRManager
+      parameters:
+        - $ref : '#/components/parameters/HRManagerId'
+        - $ref : '#/components/parameters/contactId'
+      responses:
+        '200' : 
+          description: successful request
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/HRContactResponse'
+        '403' :
+          description: action is not allowed
+        '504' :
+          description: something went wrong
+    patch:
+      tags:
+        - Contact
+      summary: updates a new HRManager contact
+      parameters:
+        - $ref : '#/components/parameters/HRManagerId'
+        - $ref : '#/components/parameters/contactId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/HRContactBase'
+      responses:
+        '200' : 
+          description: the existing contact for HRManager is updated
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/HRContactResponse'
+        '403' :
+          description: action is not allowed
+        '404':
+          description: not found
+        '504' :
+          description: something went wrong
+    delete:
+      tags:
+       - Contact
+      summary: deletes the existing HRManager's contact
+      parameters:
+        - $ref : '#/components/parameters/HRManagerId'
+        - $ref : '#/components/parameters/contactId'
+      responses:
+        '204' : 
+          description: Contact was successfully deleted
+        '403' :
+          description: action is not allowed
+        '404':
+          description: not found
+        '504' :
+          description: something went wrong
+  /user/employers:
+    post:
+      tags:
+        - employer
+      summary: Create a new employer
+      requestBody :
+        content : 
+          application/json :
+            schema :
+              $ref : '#/components/schemas/employerBase'
+      responses:
+        '201' : 
+          description: new employer is createdUser
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/employerResponse'
+        '403' :
+          description: action is not allowed
+        '504' :
+          description: something went wrong
+  /user/employers/{employerId}:
+    patch:
+      tags:
+        - employer
+      summary: Updates the existing employer
+      parameters:
+        - $ref : '#/components/parameters/employerId'
+      requestBody :
+        content : 
+          application/json :
+            schema :
+              $ref : '#/components/schemas/employerBase'
+      responses:
+        '200' : 
+          description: the existing employer successfully updated
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/employerResponse'
+        '403' :
+          description: action is not allowed
+        '404':
+          description: not found
+        '504' :
+          description: something went wrong
+    delete:
+      tags:
+        - employer
+      summary: Deletes the existing employer
+      parameters:
+        - $ref : '#/components/parameters/employerId'
+      responses:
+        '200' : 
+          description: the employer was successfully deleted
+        '403' :
+          description: action is not allowed
+        '404':
+          description: not found
+        '504' :
+          description: something went wrong
+  /countries:
+    get:
+      tags:
+        - country
+      summary: Get list of all countries
+      responses:
+        '200' :
+          description: List of all countries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  countries:
+                    type: array
+                    items:
+                      $ref : '#/components/schemas/country'
+        '404':
+          description: Countries are not found
+        '504':
+          description: something went wrong
+  /countries/{countryId}:
+    get:
+      tags:
+        - country
+      summary: Get specific country
+      parameters:
+        - $ref : '#/components/parameters/countryId'
+      responses:
+        '200':
+          description: Country information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/country'
+        '404':
+          description: Country is not found
+        '504':
+          description: something went wrong
+  /currencies:
+    get:
+      tags:
+        - currencies
+      summary: Get the list of currencies
+      responses:
+        '200':
+          description: List of currencies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currencies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/currency'
+        '404':
+          description: currencies are not found
+        '403':
+          description: no permission
+        '504':
+          description: something went wrong
+  /currencies/{currencyId}:
+    get:
+      tags:
+        - currencies
+      summary: Get the list of currencies
+      parameters:
+        - name: currencyId
+          schema:
+            type: string
+            format: uuid
+          in: path
+          required: true
+      responses:
+        '200':
+          description: List of currencies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currency:
+                    $ref: '#/components/schemas/currency'
+        '404':
+          description: currency is not found
+        '403':
+          description: no permission
+        '504':
+          description: something went wrong
+  /messengers:
+    get:
+      tags:
+        - messengers
+      summary: Get the list of messengers
+      responses:
+        '200':
+          description: List of messengers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messengers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/messenger'
+        '404':
+          description: messengers are not found
+        '403':
+          description: no permission
+        '504':
+          description: something went wrong
+components:
+  schemas:
+    offerBase:
+      type: object
+      properties:
+        monthlySalary:
+          type : number
+        jobTypes :
+          description: job type array that is prefered by user
+          type : array
+          items :
+            type : string
+            enum : [full-time, part-time, contract]
+        position:
+          type: string
+        contractLength:
+          type : number
+        comments:
+          type: string
+    offerResponse:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/offerBase'
+        - type: object
+          properties:
+            isDeleted :
+              type : boolean
+              description: true = deleted
+        - $ref: '#/components/schemas/commonEntity'
+      required:
+        - id
+    currency:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        shortName:
+          type: string
+        isoCode:
+          type: string
+    jobSearchingProcessBase:
+      type: object
+      properties:
+        name :
+          type : string
+        minimumMonthlySalary :
+          type : number
+        maximumMonthlySalary :
+          type : number
+        currency :
+          $ref : '#/components/schemas/currency'
+        locations :
+          description: array of countries are selected by user
+          type : array
+          items :
+            $ref : '#/components/schemas/country'
+        position :
+          type : string
+        jobTypes :
+          description: job type array that is prefered by user
+          type : array
+          items :
+            type : string
+            enum : [full-time, part-time, contract]
+    jobSearchingProcessResponse:
+      allOf:
+        - type: object
+          properties:
+            status :
+              type : string
+              enum : [active, archived, finished, deleted]
+            createdUser :
+              type : string
+              format : uuid
+        - $ref : '#/components/schemas/commonEntity'
+        - $ref : '#/components/schemas/jobSearchingProcessBase'
+      required:
+        - id
+    vacancyBase:
+      type : object
+      required:
+        - employer
+        - position
+        - id
+        - name
+      properties:
+        openDate :
+          type : string
+          format : date-time
+        minimumMonthlySalary :
+          type : number
+        maximumMonthlySalary :
+          type : number
+        currency :
+          $ref : '#/components/schemas/currency'
+        applicationDate :
+          type : string
+          format : date-time
+        position :
+          type : string
+        department :
+          type : string
+          nullable: true
+        jobType :
+          description: job type of the vacancy
+          type : array
+          items :
+            type : string
+            enum : [full-time, part-time, contract]
+        contractLength :
+          type : number
+          nullable: true
+        benefits :
+          type : string
+          nullable: true
+        responsibilities :
+          type : string
+          nullable: true
+        comments :
+          type : string
+          nullable: true
+        name :
+          type : string
+        locations :
+          description: array of countries are selected by user
+          type : array
+          items :
+            $ref : '#/components/schemas/country'
+        employer:
+          oneOf:
+            - $ref : '#/components/schemas/employerBase'
+            - allOf:
+              - $ref : '#/components/schemas/employerBase'
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+        offer:
+          $ref : '#/components/schemas/offerBase'
+    employerBase:
+      required:
+        - name
+      type : object
+      properties:
+        name :
+          type : string
+          nullable: false
+        locations :
+          description: list of employer's countries
+          type : array
+          items:
+            $ref: '#/components/schemas/country'
+    employerResponse:
+      required:
+        - id
+      allOf :
+        - $ref : '#/components/schemas/employerBase'
+        - $ref : '#/components/schemas/commonEntity'
+    applicationStageBase:
+      type: object
+      required:
+        - name
+        - status
+        - orderNumber
+      properties:
+        orderNumber :
+          type: number
+          nullable: true
+        name :
+          type : string
+          nullable: false
+        status :
+          type : string
+          enum : [active, waiting, blocked, passed, failed, passed, deleted]
+    applicationStageResponse:
+      required:
+        - id
+      allOf :
+        - type : object
+          properties:
+            id :
+              type : string
+              format : uuid
+        - $ref : '#/components/schemas/applicationStageBase'
+    HRManagerBase:
+      required:
+        - firstName
+      type : object
+      properties :
+          firstName :
+            type : string
+            nullable: false
+          secondName:
+            type : string
+          lastName :
+            type : string
+    HRManagerResponse:
+      required:
+        - firstName
+        - id
+      allOf:
+        - type : object
+          properties:
+            isDeleted :
+              type : boolean
+              description: true=deleted
+            employer :
+              $ref : '#/components/schemas/employerResponse'
+            creationDate :
+              type : string
+              format : date-time
+            updateDate :
+              type : string
+              format : date-time
+        - $ref : '#/components/schemas/commonEntity'
+        - $ref : '#/components/schemas/HRManagerBase'
+    HRContactBase:
+      type : object
+      properties :
+        messenger :
+          $ref : '#/components/schemas/messenger'
+        value : 
+          type : string
+        preferable:
+          type: boolean
+          description: if true then contact is preferable
+    HRContactResponse:
+      allOf:
+        - type : object
+          properties:
+            isDeleted :
+              type : boolean
+              description: true=deleted
+        - $ref : '#/components/schemas/commonEntity'
+        - $ref : '#/components/schemas/HRContactBase'
+    commonEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        creationDate:
+          type: string
+          format: date-time
+        updateDate:
+          type: string
+          format: date-time
+      required:
+        - id
+    vacancyId:
+      type: object
+      properties:
+        vacancyIdentifier:
+          type: string
+          format: uuid
+          nullable: false
+      required:
+        - vacancyIdentifier
+    country:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+    vacancyResponse:
+      type : object
+      allOf:
+        - $ref : '#/components/schemas/vacancyBase'
+        - $ref : '#/components/schemas/commonEntity'
+        - type: object
+          properties:
+            status : 
+              type : string
+              enum : [active, failed, success, deleted]
+            employer:
+              $ref : '#/components/schemas/employerResponse'
+        - anyOf:
+            - type: object
+              properties:
+                offer:
+                  $ref : '#/components/schemas/offerResponse'
+    messenger:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+  parameters:
+    vacancyIdParam:
+      name : vacancyIdParam
+      in : path
+      schema :
+        type : string
+        format : uuid
+      required: true
+    applicationStageId: 
+      name : applicationStageId
+      in : path
+      schema :
+        type : string
+        format : uuid
+      required: true
+    HRManagerId:  
+      name : HRManagerId
+      in : path
+      schema :
+        type : string
+        format : uuid
+      required: true
+    contactId:
+      name : contactId
+      in : path
+      schema :
+        type : string
+        format : uuid
+      required: true
+    employerId:
+      name : employerId
+      in : path
+      schema :
+        type : string
+        format: uuid
+      required: true
+    jobSearchingProcessId:
+      name : jobSearchingProcessId
+      in : path
+      schema:
+        type : string
+        format : uuid
+      required: true
+    countryId:
+      name: countryId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true

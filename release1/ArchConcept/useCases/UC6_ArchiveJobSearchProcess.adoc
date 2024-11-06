@@ -1,0 +1,59 @@
+= Use Case: UC6_ArchiveJobSearchProcess
+:doctype: article
+:toc:
+:toclevels: 1
+
+== Summary
+The user archives an existing JobSearchingProcess.
+
+== References
+- JobSearchingProcess - the process of seeking a new job. See <<TBD link, TBD>>
+
+== Actors
+* **Primary Actor**: User
+
+== Business requirements links
+* <<../../projectDocs/brd.adoc#BR2.16, BR2.16>>
+
+== Preconditions
+
+- User is logged into the System.
+- User is authorized to edit or archive a job searching process.
+- JobSearchingProcess exists.
+- One of the following conditions is met:
+    * JobSearchingProcessPage (see <<TBD link, TBD>>) is displayed on the user's screen,
+    * JobSearchingProcessesListPage (see <<TBD link, TBD>>) is displayed on the user's screen.
+
+== Postconditions
+
+- The System successfully archives the JobSearchingProcess.
+- The user can view the archived JobSearchingProcess in the JobSearchingProcessesArchivedListPage (see <<TBD link, TBD>>).
+
+== Trigger
+
+- User initiates the archiving of the JobSearchingProcess.
+
+== Main Scenario
+
+1. System prompts User to confirm the archiving of the JobSearchingProcess 
+2. User approves the archiving of the JobSearchingProcess
+3. System archives the JobSearchingProcess
+4. The System displays the JobSearchingProcessesListPage (see <<TBD link, TBD>>)
+5. End of scenario
+
+== Extensions (Alternate Flows)
+.Extensions
+[%autowidth, options="header"]
+|===
+|Main Scenario step |Condition |Alternate steps to be executed
+
+|4
+|The archiving of the JobSearchingProcess ends with an error
+|1. System notifies User that the error occurred +
+2. Return to the Step 2 of the Main Scenario
+
+|===
+
+== Special Requirements
+
+- The system should archive the JobSearchingProcess in under 5 seconds

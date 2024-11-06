@@ -1,0 +1,47 @@
+@startuml "jobHunter class diagram"
+    
+    !include class_applicationStage.puml
+    !include class_employer.puml    
+    !include class_HRContact.puml
+    !include class_HRManager.puml
+    !include class_jobSearchProcess.puml
+    !include class_offer.puml
+    '!include class_salaryRange.puml
+    '!include class_user.puml
+    !include class_vacancy.puml
+    '!include class_vacancyHRManager.puml
+    '!include class_file.puml
+    !include enum_vacancyStatus.puml
+    !include enum_jobSearchingProcessStatus.puml
+    !include enum_applicationStageStatus.puml
+    !include enum_jobTypes.puml
+    !include class_country.puml
+    !include class_currency.puml
+    !include enum_messenger.puml
+
+    'user "1" *-- "0.." jobSearchProcess
+    jobSearchProcess "1" *-- "0.." vacancy
+    'jobSearchProcess "1" --> "1" salaryRange
+    'vacancy "1" --> "1" salaryRange
+    HRManager "1" *-- "*" HRContact
+    'vacancy "*" -- "1" dicVacancyStatuses
+    vacancy "*" --> "1" employer
+    'employer "1" --> "0.." HRManager
+    'vacancy "1" --> "0.." vacancyHRManager
+    'HRManager "1" <-- "0.." vacancyHRManager 
+    vacancy "1.." --> "0.." HRManager
+    vacancy "1" *-- "0.." offer
+    vacancy "1" *-- "0.." applicationStage
+    'vacancy "1" *-- "0.." file
+    vacancy "0.." -- "1" vacancyStatus
+    applicationStage "0.." -- "1" applicationStageStatus
+    jobSearchProcess "0.." -- "1" jobSearchingProcessStatus
+    jobSearchProcess "0.." -- "1.." enumjobTypes
+    vacancy "0.." -- "1" country
+    jobSearchProcess "0.." -- "1.." country
+    employer "0.." -- "1" country
+    vacancy "0.." -- "0..1" currency
+    jobSearchProcess "0.." -- "0..1" currency
+    offer "0.." -- "0..1" currency
+    HRContact "0." -- "0..1" messenger
+@enduml

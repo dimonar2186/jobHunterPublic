@@ -1,0 +1,44 @@
+@startuml "Update the existing applicationStage of the existing vacancy sequence diagram"
+skinparam topurl https://github.com/dimonar2186/jobHunter/tree/master/srs/algorithms/
+skinparam sequenceReferenceBackgroundColor yellow
+
+    actor "user" as user
+    participant "applicationFront" as front
+    participant "applicationBack" as back
+    database "database" as db
+    entity "applicationStage" as applicationStage
+
+    user -> front : initiate update of the existing applicationStage
+    loop
+        user -> front : provide applicationStage.orderNumber\nand/or applicationStage.name\nand/or applicationStage.status
+        front -> front : check if the applicationStage.name\nis provided
+        opt 
+            front --> front : applicationStage.name is missed
+            front --> user : notify\n"Provide: applicationStage.name"
+        end
+        break
+            front --> front : applicationStage.name is provided
+        end
+    end
+    front -> back : PATCH ../user/applicationStages/{applicationStageId}
+    back -> db : select all following applicationStages
+    back -> db : update orderNumber and/or name and/or status\nof the applicationStage\nand\n \nof all following applicationStages
+    db -> applicationStage : update
+    db --> back : result
+    alt "applicationStage is not found"
+        break
+            back --> front : HTTP code 404
+            front --> user : notify "applicationStage was not found"
+        end
+    else "applicationStage update failed"
+        break
+            back --> front : HTTP code 504
+            front --> user : notify "Error occured"
+        end
+    else "applicationStage update is successful"
+        back --> front : HTTP code 200 \napplicationStage details
+        front -> front : update vacancyPage
+        front --> user : notify "applicationStage was updated"
+    end
+
+@enduml
